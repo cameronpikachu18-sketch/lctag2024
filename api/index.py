@@ -287,7 +287,7 @@ def cacheplatfabid():
 
 @app.route('/api/TitleData', methods=['POST'])
 def titled_data():
-    return jsonify({"MOTD": "<color=#ff8d0a>   [ > WELCOME TO PROJECT LUNAR! < ]  </color>\n<color=#ff00ee>   BOOST THE DISCORD FOR EVERY COSMETIC!</color>"})
+    return jsonify({"MOTD": "<color=#FFB2D0>discord.gg/NvHbcsp7cJ</color>"})
 
 @app.route("/api/CheckForBadName", methods=["POST", "GET"])
 def checkforbadname():
