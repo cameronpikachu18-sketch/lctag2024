@@ -8,9 +8,9 @@ import requests
 
 class GameInfo:
     def __init__(self):
-        self.TitleId: str = ""
-        self.SecretKey: str = ""
-        self.ApiKey: str = ""
+        self.TitleId: str = "EB64D"
+        self.SecretKey: str = "N7A51URUTO48XIG583NZDH9WXW8HDZ6FTJ4NN4Q3G8BK3FRDX1"
+        self.ApiKey: str = "OC|1166633403205472|9dde8f0a0f9c8efb2823224de58d2477"
 
     def GetAuthHeaders(self) -> dict:
         return {
