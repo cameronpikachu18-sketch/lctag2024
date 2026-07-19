@@ -1,40 +1,38 @@
 import base64
 import json
+import os
 import random
 import secrets
 from datetime import datetime, timezone
 from flask import Flask, jsonify, request
 import requests
 
+# Clean, top-level declaration for Vercel's builder
+app = Flask(__name__)
+
 class GameInfo:
     def __init__(self):
-        self.TitleId: str = "EB64D"
-        self.SecretKey: str = "N7A51URUTO48XIG583NZDH9WXW8HDZ6FTJ4NN4Q3G8BK3FRDX1"
-        self.ApiKey: str = "OC|1166633403205472|9dde8f0a0f9c8efb2823224de58d2477"
+        self.TitleId = os.environ.get("PLAYFAB_TITLE_ID", "")
+        self.SecretKey = os.environ.get("PLAYFAB_SECRET_KEY", "")
+        self.ApiKey = os.environ.get("OCULUS_API_KEY", "")
 
-    def GetAuthHeaders(self) -> dict:
+    def GetAuthHeaders(self):
         return {
             "content-type": "application/json",
             "X-SecretKey": self.SecretKey
         }
 
-    def GetTitle(self) -> str:
+    def GetTitle(self):
         return self.TitleId
 
-settings: GameInfo = GameInfo()
-app = Flask(__name__)
+settings = GameInfo()
 
 # Global Caches & Security Variables
-playfabCache: dict = {}
-muteCache: dict = {}
-currentNonces: dict = {}
+playfabCache = {}
+muteCache = {}
+currentNonces = {}
 
-# Filled Credentials
-settings.TitleId = "EB64D"
-settings.SecretKey = "N7A51URUTO48XIG583NZDH9WXW8HDZ6FTJ4NN4Q3G8BK3FRDX1"
-settings.ApiKey = "OC|1166633403205472|9dde8f0a0f9c8efb2823224de58d2477"
-
-# Updated Attestation Validation Settings
+# Fixed Verification Parameters
 Valid_Package = "com.visonfortop1"
 Cert = "0CBD8BA08218D2F5A7FBE2820534F670F9C396199620845557185460D06B2D76"
 
@@ -209,7 +207,7 @@ def MotherShipAuth():
 
     if device_ban_status:
         return jsonify({
-            "Your device is currently banned from this application.",
+            "BanMessage": "Your device is currently banned from this application.",
             "BanExpirationTime": device_ban.get("remaining_ban_time", "Unknown")
         }), 403
 
@@ -287,7 +285,7 @@ def cacheplatfabid():
 
 @app.route('/api/TitleData', methods=['POST'])
 def titled_data():
-    return jsonify({"MOTD": "<color=#FFB2D0>discord.gg/NvHbcsp7cJ</color>"})
+    return jsonify({"MOTD": "<color=#ff8d0a>   [ > WELCOME TO PROJECT LUNAR! < ]  </color>\n<color=#ff00ee>   BOOST THE DISCORD FOR EVERY COSMETIC!</color>"})
 
 @app.route("/api/CheckForBadName", methods=["POST", "GET"])
 def checkforbadname():
