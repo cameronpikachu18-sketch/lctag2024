@@ -1,13 +1,13 @@
+from flask import Flask, jsonify, request
 import base64
 import json
 import os
 import random
 import secrets
 from datetime import datetime, timezone
-from flask import Flask, jsonify, request
 import requests
 
-# Clean, top-level declaration for Vercel's builder
+# 1. MUST BE FIRST: Clean, clear global definition
 app = Flask(__name__)
 
 class GameInfo:
@@ -25,18 +25,19 @@ class GameInfo:
     def GetTitle(self):
         return self.TitleId
 
+# 2. Delayed initialization so it doesn't block the parser
 settings = GameInfo()
 
-# Global Caches & Security Variables
 playfabCache = {}
 muteCache = {}
 currentNonces = {}
 
-# Fixed Verification Parameters
 Valid_Package = "com.visonfortop1"
 Cert = "0CBD8BA08218D2F5A7FBE2820534F670F9C396199620845557185460D06B2D76"
 
-def ReturnFunctionJson(data, funcname, funcparam={}):
+def ReturnFunctionJson(data, funcname, funcparam=None):
+    if funcparam is None:
+        funcparam = {}
     print(f"Calling function: {funcname} with parameters: {funcparam}")
     rjson = data.get("FunctionParameter", {})
     userId = rjson.get("CallerEntityProfile", {}).get("Lineage", {}).get("TitlePlayerAccountId")
@@ -61,7 +62,7 @@ def ReturnFunctionJson(data, funcname, funcparam={}):
         print(f"Function execution failed, status code: {req.status_code}")
         return jsonify({}), req.status_code
 
-def GetIsNonceValid(nonce: str, oculusId: str):
+def GetIsNonceValid(nonce, oculusId):
     req = requests.post(
         url=f'https://graph.oculus.com/user_nonce_validate?nonce={nonce}&user_id={oculusId}&access_token={settings.ApiKey}',
         headers={
