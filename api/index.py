@@ -402,7 +402,7 @@ def photonauth():
             nickName = req.json().get("data", {}).get("UserInfo", {}).get("TitleInfo", {}).get("DisplayName")
             return jsonify({
                 'resultCode': 1,
-                'message': f'Authenticated successfully',
+                'message': 'Authenticated successfully',
                 'userId': f'{userId.upper()}',
                 'nickname': nickName
             })
@@ -417,19 +417,19 @@ def photonauth():
             return jsonify({'resultCode': 2, 'message': 'Invalid token'})
 
         req = requests.post(
-             url=f"https://{settings.TitleId}.playfabapi.com/Server/GetUserAccountInfo",
-             json={"PlayFabId": userId},
-             headers=settings.GetAuthHeaders()
+            url=f"https://{settings.TitleId}.playfabapi.com/Server/GetUserAccountInfo",
+            json={"PlayFabId": userId},
+            headers=settings.GetAuthHeaders()
         )
 
         if req.status_code == 200:
-             nickName = req.json().get("data", {}).get("UserInfo", {}).get("TitleInfo", {}).get("DisplayName")
-             return jsonify({
-                 'resultCode': 1,
-                 'message': 'Authenticated successfully',
-                 'userId': f'{userId.upper()}',
-                 'nickname': nickName
-             })
+            nickName = req.json().get("data", {}).get("UserInfo", {}).get("TitleInfo", {}).get("DisplayName")
+            return jsonify({
+                'resultCode': 1,
+                'message': 'Authenticated successfully',
+                'userId': f'{userId.upper()}',
+                'nickname': nickName
+            })
         return jsonify({'resultCode': 0, 'message': "Something went wrong"})
 
 if __name__ == "__main__":
