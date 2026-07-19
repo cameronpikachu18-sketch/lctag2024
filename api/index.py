@@ -22,7 +22,7 @@ class GameInfo:
         return self.TitleId
 
 settings: GameInfo = GameInfo()
-app: Flask = Flask(__name__)
+app = Flask(__name__)
 
 # Global Caches & Security Variables
 playfabCache: dict = {}
